@@ -19,4 +19,4 @@
     mount: src=/dev/cdrom1 fstype=iso9660 name=/media state=unmounted
   
   - name: Clear installation files
-    file: path=/opt/vmware-tools-distrib state=absent
+    file: path=/tmp/vmware-tools-distrib state=absent
