@@ -1,0 +1,22 @@
+- hosts: sles
+
+  remote_user: root
+
+  tasks:
+  - name: Mount VMware Tools disk (/dev/cdrom1) - must attach it first
+    mount: src=/dev/cdrom1 fstype=iso9660 name=/media state=mounted
+  
+  - command: find /media/ -name "*.tar.gz"
+    register: vmwaretools_gzip
+
+  - name: Extract VMware Tools package
+    unarchive: copy=no dest=/tmp/ src={{ vmwaretools_gzip.stdout }}
+ 
+  - name: Start VMware Tools installation
+    command: /tmp/vmware-tools-distrib/vmware-install.pl -d
+
+  - name: Umount CD-ROM (/dev/cdrom1)
+    mount: src=/dev/cdrom1 fstype=iso9660 name=/media state=unmounted
+  
+  - name: Clear installation files
+    file: path=/opt/vmware-tools-distrib state=absent
