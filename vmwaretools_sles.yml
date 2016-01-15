@@ -3,6 +3,11 @@
   remote_user: root
 
   tasks:
+  - command: vmware-toolbox-cmd -v 2>&1
+    register: vmwaretools_ver
+
+  - debug: msg="{{ vmwaretools_ver.stdout }}"
+
   - name: Mount VMware Tools disk (/dev/cdrom1) - must attach it first
     mount: src=/dev/cdrom1 fstype=iso9660 name=/media state=mounted
   
